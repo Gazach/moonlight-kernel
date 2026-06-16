@@ -9,19 +9,27 @@ CFLAGS = --target=i386-pc-none-elf \
          -ffreestanding \
          -nostdlib \
          -fno-builtin \
-         -fno-stack-protector
+         -fno-stack-protector \
+         -Ikernel
 		 
 ASMFLAGS = -f elf32
 LDFLAGS = -m elf_i386 -T linker.ld
 
-OBJS = boot.o kernel.o
+# All C sources in kernel/
+C_SOURCES = kernel/kernel.c \
+            kernel/vga.c \
+            kernel/terminal.c \
+            kernel/printf.c
+
+C_OBJS = $(C_SOURCES:.c=.o)
+OBJS = boot.o $(C_OBJS)
 
 all: $(ISO_NAME)
 
 boot.o: boot/boot.asm
 	$(ASM) $(ASMFLAGS) $< -o $@
 
-kernel.o: kernel/kernel.c
+kernel/%.o: kernel/%.c kernel/*.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 kernel.elf: $(OBJS)
@@ -38,6 +46,7 @@ run: $(ISO_NAME)
 
 clean:
 	rm -rf $(ISO_DIR)
+	rm -f kernel/*.o
 	rm -f *.o
 	rm -f kernel.elf
 	rm -f $(ISO_NAME)
