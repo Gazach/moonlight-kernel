@@ -19,6 +19,7 @@ struct idt_ptr {
 #define IDT_SIZE 256
 
 void idt_init();
+void set_idt_entry(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags);
 void isr_handler();
 
 #endif /* IDT_H */

@@ -3,6 +3,8 @@
 //kernel header
 #include "terminal.h"
 #include "IDT.h"
+#include "pic.h"
+#include "irq.h"
 
 #include "std/printf.h"
 #include "common/string.h"
@@ -19,15 +21,12 @@
 #endif
 
 void kernel_main(void) {
-	
     terminal_initialize();
-    printf("step 1: terminal ok\n");
-    
     idt_init();
-    printf("step 2: idt loaded\n");
-    
-    volatile int zero = 0;
-    int x = 1 / zero;
-    
-    printf("should not reach here\n");
+    pic_init();
+    irq_init();
+    __asm__ volatile("sti");
+
+    printf("IRQs ready\n");
+    for(;;);
 }
