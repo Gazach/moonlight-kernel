@@ -31,12 +31,46 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
 	terminal_buffer[index] = vga_entry(c, color);
 }
 
+void terminal_scroll(void)
+{
+    for (size_t y = 1; y < VGA_HEIGHT; y++) {
+        for (size_t x = 0; x < VGA_WIDTH; x++) {
+            const size_t from_index = y * VGA_WIDTH + x;
+            const size_t to_index = (y - 1) * VGA_WIDTH + x;
+            terminal_buffer[to_index] = terminal_buffer[from_index];
+        }
+    }
+    // Clear the last line
+    for (size_t x = 0; x < VGA_WIDTH; x++) {
+        const size_t index = (VGA_HEIGHT - 1) * VGA_WIDTH + x;
+        terminal_buffer[index] = vga_entry(' ', terminal_color);
+    }
+}
+
+/* Update hardware VGA cursor position */
+static void terminal_update_cursor(void)
+{
+	size_t pos = terminal_row * VGA_WIDTH + terminal_column;
+	
+	/* Set cursor position low byte */
+	__asm__ volatile("outb %0, %1" : : "a"((unsigned char)(pos & 0xFF)), "d"((unsigned short)0x3D5));
+	__asm__ volatile("outb %0, %1" : : "a"((unsigned char)0x0E), "d"((unsigned short)0x3D4));
+	
+	/* Set cursor position high byte */
+	__asm__ volatile("outb %0, %1" : : "a"((unsigned char)((pos >> 8) & 0xFF)), "d"((unsigned short)0x3D5));
+	__asm__ volatile("outb %0, %1" : : "a"((unsigned char)0x0F), "d"((unsigned short)0x3D4));
+}
+
 void terminal_putchar(char c) 
 {
 	if (c == '\n') {
 		terminal_column = 0;
-		if (++terminal_row == VGA_HEIGHT)
-			terminal_row = 0;
+        terminal_row++;
+		if (terminal_row == VGA_HEIGHT) {
+			terminal_scroll();
+            terminal_row = VGA_HEIGHT - 1;
+		}
+		terminal_update_cursor();
 		return;
 	}
 	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
@@ -45,6 +79,7 @@ void terminal_putchar(char c)
 		if (++terminal_row == VGA_HEIGHT)
 			terminal_row = 0;
 	}
+	terminal_update_cursor();
 }
 
 void terminal_write(const char* data, size_t size) 
