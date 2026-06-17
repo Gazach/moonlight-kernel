@@ -2,9 +2,9 @@
 
 //kernel header
 #include "terminal.h"
-#include "IDT.h"
-#include "pic.h"
-#include "irq.h"
+#include "arch/interupt/idt.h"
+#include "arch/interupt/pic.h"
+#include "arch/interupt/irq.h"
 
 #include "std/printf.h"
 #include "common/string.h"
