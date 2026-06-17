@@ -5,5 +5,6 @@
 
 void irq_init(void);
 void irq_handler(uint32_t irq);
+void irq_install(uint8_t irq, void (*handler)(void));
 
 #endif

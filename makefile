@@ -43,6 +43,7 @@ C_SRCS := $(SRCDIR)/kernel/kernel.c \
           $(SRCDIR)/kernel/vga.c \
           $(SRCDIR)/kernel/terminal.c \
           $(SRCDIR)/kernel/arch/interupt/idt.c \
+          $(SRCDIR)/kernel/arch/interupt/irq.c \
           $(SRCDIR)/kernel/arch/interupt/pic.c \
           $(SRCDIR)/kernel/arch/interupt/isr.c \
           $(SRCDIR)/kernel/std/printf.c \
