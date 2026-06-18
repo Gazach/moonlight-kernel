@@ -56,16 +56,13 @@ void kernel_main(void) {
     irq_init();
     PS2_init();
     keyboard_init();
-    
     __asm__ volatile("sti");
 
-    printf("Moonlight OS!\n");
-    printf("Keyboard driver initialized.\n");
-    
-    // Run keyboard test
-    keyboard_test();
-    
-    printf("\nKernel ready. Type something:\n> ");
-    
-    for(;;);
+
+    char buf[256];
+    while (1) {
+        printf("> ");
+        keyboard_readline(buf, sizeof(buf));
+        printf("you typed: %s\n", buf);
+    }
 }

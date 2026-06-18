@@ -43,29 +43,29 @@ void PS2_init(){
         inb(PS2_DATA_PORT);
     }
 
-    // Set controller configuration: enable interrupts for first port, disable second port
+    // Read and modify controller config
     PS2_WriteCommand(PS2_READ_CONTROLLER_CONFIG);
     uint8_t config = PS2_ReadData();
-    config &= ~(1 << 0); // Disable first port interrupt
-    config &= ~(1 << 1); // Disable second port interrupt
+    config &= ~(1 << 0);  // disable first port interrupt for now
+    config &= ~(1 << 1);  // disable second port interrupt
+    config |=  (1 << 6);  // enable scancode translation (Set 2 → Set 1)
     PS2_WriteCommand(PS2_WRITE_CONTROLLER_CONFIG);
     PS2_WriteData(config);
 
-    // Perform self-test
+    // Self-test
     PS2_WriteCommand(PS2_SELF_TEST);
     if (PS2_ReadData() != 0x55) {
-        // Handle self-test failure (e.g., log error, halt system)
-        return;
+        return;  // self-test failed
     }
 
-    // Enable first port (keyboard)
+    // Enable first port
     PS2_WriteCommand(PS2_ENABLE_FIRST_PORT);
 
-    // Enable first port IRQ in controller config
+    // Re-read config and enable first port IRQ
     PS2_WriteCommand(PS2_READ_CONTROLLER_CONFIG);
     config = PS2_ReadData();
-    config |= (1 << 0); // Enable first port interrupt
+    config |= (1 << 0);   // enable first port interrupt
+    config |= (1 << 6);   // keep translation enabled
     PS2_WriteCommand(PS2_WRITE_CONTROLLER_CONFIG);
     PS2_WriteData(config);
-
 }

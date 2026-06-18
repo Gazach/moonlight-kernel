@@ -1,5 +1,8 @@
 
 #include "terminal.h"
+#include "std/printf.h"
+
+#include "common/message.h"
 
 size_t terminal_row;
 size_t terminal_column;
@@ -18,6 +21,8 @@ void terminal_initialize(void)
 			terminal_buffer[index] = vga_entry(' ', terminal_color);
 		}
 	}
+    // greeting message
+    print_welcome_message();
 }
 
 void terminal_setcolor(uint8_t color) 

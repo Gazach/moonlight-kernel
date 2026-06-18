@@ -49,6 +49,7 @@ C_SRCS := $(SRCDIR)/kernel/kernel.c \
           $(SRCDIR)/kernel/std/printf.c \
           $(SRCDIR)/kernel/common/string.c \
           $(SRCDIR)/kernel/common/div64.c \
+          $(SRCDIR)/kernel/common/message.c \
           $(SRCDIR)/kernel/driver/ps2.c \
           $(SRCDIR)/kernel/driver/keyboard.c \
 

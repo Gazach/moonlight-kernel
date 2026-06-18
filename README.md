@@ -9,7 +9,7 @@ Don't expect a production-ready operating system — this is simply a fun projec
 ## Build
 
 ### Target platform
-x86
+x86 (i686)
 
 <hr>
 
@@ -34,7 +34,7 @@ make
 if you want to clean and rebuild :
 
 ```bash
-make clean
+make clean && make all
 ```
 
 ```bash
