@@ -24,6 +24,8 @@ extern kernel_main
 _start:
     cli
     mov esp, 0x90000
+    push ebx    ; push multiboot info structure
+    push eax    ; push magic number
     call kernel_main
 
 .hang:

@@ -5,6 +5,9 @@
 #include "arch/x86/interupt/irq.h"
 #include "shell/shell.h"
 
+//memory header
+#include "memory/pmm.h"
+
 //driver header
 #include "driver/ps2.h"
 #include "driver/keyboard.h"
@@ -19,28 +22,33 @@
 #error "You are not using a cross-compiler, you will most certainly run into trouble"
 #endif
 
-/* This tutorial will only work for the 32-bit ix86 targets. */
+/* check if its 32-bit ix86 cpu targets. */
 #if !defined(__i386__)
-#error "This tutorial needs to be compiled with a ix86-elf compiler"
+#error "This thing needs to be compiled with a ix86-elf compiler"
 #endif
 
 // function to initialize the kernel
-int kernel_init() {
-    
+int kernel_init(uint32_t mb_info_addr) {
+
     terminal_initialize();
     idt_init();
     pic_init();
     irq_init();
     PS2_init();
     keyboard_init();
+    // Enable interrupts
     __asm__ volatile("sti");
+
+    // Initialize the Physical Memory Manager (PMM)
+    pmm_init(mb_info_addr); // Assuming the multiboot info structure is
 
     return 0;
 }
 
-void kernel_main(void) {
+// main kernel entry point
+void kernel_main(uint32_t magic, uint32_t mb_info_addr) {
     // call the kernel initialization function
-    if (kernel_init() != 0) {
+    if (kernel_init(mb_info_addr) != 0) { // if kernel initialization fails or returns non-zero, print an error message and halt the system
         printf("Kernel initialization failed!\n");
         return;
     }

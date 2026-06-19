@@ -2,6 +2,7 @@
 #include "../std/printf.h"
 #include "../kernel_version.h"
 #include "../arch/x86/cpu.h"
+#include "../memory/pmm.h"
 #include "../vga.h"
 
 // PUBLIC API
@@ -46,6 +47,7 @@ void moonfetch_message()
         terminal_putchar(' ');
         terminal_putchar(' ');
 
+        // Print system information next to the moon
         if (y == -radius_y + 0)
             printf("Moonlight OS");
         else if (y == -radius_y + 1)
@@ -64,8 +66,14 @@ void moonfetch_message()
             printf("CPU Vendor    : %s", cpu_vendor);
         else if (y == -radius_y + 8)
             printf("CPU Brand     : %s", cpu_brand);
-
-        terminal_putchar('\n');
+        else if (y == -radius_y + 9)
+            printf("Memory        : %u MB used / %u MB total",
+            ((pmm_total_pages() - pmm_free_pages()) * 4) / 1024,
+            (pmm_total_pages() * 4) / 1024);
+        else if (y == -radius_y + 10)
+            printf("Free Memory   : %u MB",
+                (pmm_free_pages() * 4) / 1024);
+                terminal_putchar('\n');
         
         // Set color back to dark grey for next moon line
         terminal_setcolor(vga_entry_color(VGA_COLOR_DARK_GREY, VGA_COLOR_BLACK));
