@@ -2,6 +2,7 @@
 #define IDT_H
 
 #include <stdint.h>
+#include "isr.h"
 
 struct idt_entry {
     uint16_t offset_low;   // lower 16 bits of handler function address
@@ -20,6 +21,5 @@ struct idt_ptr {
 
 void idt_init();
 void set_idt_entry(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags);
-void isr_handler();
 
 #endif /* IDT_H */
