@@ -8,6 +8,7 @@
 //memory header
 #include "memory/pmm.h"
 #include "memory/m_heap.h"
+#include "memory/paging.h"
 
 //driver header
 #include "driver/ps2.h"
@@ -45,6 +46,9 @@ int kernel_init(uint32_t mb_info_addr) {
 
     // Initialize the heap
     heap_init();
+
+    // Initialize paging
+    paging_init();
 
     return 0;
 }

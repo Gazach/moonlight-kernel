@@ -59,7 +59,8 @@ C_SRCS := $(SRCDIR)/kernel/kernel.c \
           $(SRCDIR)/kernel/shell/shell.c \
           $(SRCDIR)/kernel/shell/shell_cmd.c \
           $(SRCDIR)/kernel/memory/pmm.c \
-          $(SRCDIR)/kernel/memory/m_heap.c
+          $(SRCDIR)/kernel/memory/m_heap.c \
+          $(SRCDIR)/kernel/memory/paging.c
 
 
 ASM_SRCS := $(SRCDIR)/boot/boot.asm \

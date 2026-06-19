@@ -91,7 +91,7 @@ void heap_init(void) {
     heap_start_block->prev  = 0;
 
     heap_ready = 1;
-    printf("Heap: initialized (%d MB at 0x%x)\n", HEAP_SIZE / 1024 / 1024, HEAP_START);
+    // printf("Heap: initialized (%d MB at 0x%x)\n", HEAP_SIZE / 1024 / 1024, HEAP_START);
 }
 
 // allocate memory from the heap (kernel malloc)
