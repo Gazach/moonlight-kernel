@@ -157,7 +157,13 @@ int keyboard_readline(char* buf, int max) {
     return i;
 }
 
+// hardware setup only
 void keyboard_init(void) {
+    // nothing hardware-specific yet beyond PS2_init
+}
+
+// IRQ registration — called by irq_init
+void keyboard_irq_init(void) {
     irq_install(1, keyboard_handler);
     pic_unmask(1);
 }

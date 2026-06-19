@@ -1,0 +1,13 @@
+#ifndef TIMER_H
+#define TIMER_H
+
+#include <stdint.h>
+
+void     timer_init(uint32_t hz);
+uint32_t timer_ticks(void);
+void     timer_sleep(uint32_t ms);
+
+// IRQ registration — called by irq_init
+void     timer_irq_init(void);
+
+#endif

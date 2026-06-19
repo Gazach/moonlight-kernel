@@ -2,6 +2,7 @@
 
 #include "../arch/x86/cpu.h"
 #include "../memory/m_heap.h"
+#include "../driver/timer.h"
 
 // Basic shell commands
 
@@ -40,4 +41,23 @@ void cmd_shell_version(void) {
 void cmd_moonfetch(void) {
     moonfetch_message();
 
+}
+
+void cmd_uptime(void) {
+    uint32_t ms   = timer_ticks();        // ticks = ms at 1000Hz
+    uint32_t secs = ms / 1000;
+    uint32_t mins = secs / 60;
+    secs = secs % 60;
+    printf("Uptime: %u:%02u.%03u\n", mins, secs, ms % 1000);
+}
+
+void cmd_sleep(int argc, char* argv[]) {
+    if (argc < 2) {
+        printf("usage: sleep <ms>\n");
+        return;
+    }
+    uint32_t ms = atoi(argv[1]);
+    printf("Sleeping %u ms...\n", ms);
+    timer_sleep(ms);
+    printf("Done!\n");
 }

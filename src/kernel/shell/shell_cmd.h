@@ -16,4 +16,8 @@ void cmd_version(void);
 void cmd_shell_version(void);
 void cmd_moonfetch(void);
 
+//timer commands
+void cmd_uptime(void);
+void cmd_sleep(int argc, char* argv[]);
+
 #endif // SHELL_CMD_H

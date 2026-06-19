@@ -77,3 +77,13 @@ int memcmp(const void* s1, const void* s2, size_t n)
     }
     return 0;
 }
+
+// convert a string to an integer
+int atoi(const char* s) {
+    int result = 0;
+    int sign   = 1;
+    if (*s == '-') { sign = -1; s++; }
+    while (*s >= '0' && *s <= '9')
+        result = result * 10 + (*s++ - '0');
+    return result * sign;
+}

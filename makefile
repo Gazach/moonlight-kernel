@@ -56,6 +56,7 @@ C_SRCS := $(SRCDIR)/kernel/kernel.c \
           $(SRCDIR)/kernel/common/message.c \
           $(SRCDIR)/kernel/driver/ps2.c \
           $(SRCDIR)/kernel/driver/keyboard.c \
+          $(SRCDIR)/kernel/driver/timer.c \
           $(SRCDIR)/kernel/shell/shell.c \
           $(SRCDIR)/kernel/shell/shell_cmd.c \
           $(SRCDIR)/kernel/memory/pmm.c \

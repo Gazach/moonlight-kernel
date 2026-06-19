@@ -13,6 +13,7 @@
 //driver header
 #include "driver/ps2.h"
 #include "driver/keyboard.h"
+#include "driver/timer.h"
 
 // libary headers
 #include "std/printf.h"
@@ -31,36 +32,37 @@
 
 // function to initialize the kernel
 int kernel_init(uint32_t mb_info_addr) {
-
-    terminal_initialize();
+    terminal_initialize(); // initialize terminal for output
     idt_init();
     pic_init();
-    irq_init();
     PS2_init();
-    keyboard_init();
-    // Enable interrupts
+
+    keyboard_init();      // hardware setup
+    timer_irq_init();     // register timer IRQ
+    keyboard_irq_init();  // register keyboard IRQ
+    irq_init();           // register all other IRQs
     __asm__ volatile("sti");
 
-    // Initialize the Physical Memory Manager (PMM)
-    pmm_init(mb_info_addr); // Assuming the multiboot info structure is
-
-    // Initialize the heap
+    // initialize memory management
+    pmm_init(mb_info_addr);
+    // initialize heap and paging
     heap_init();
-
-    // Initialize paging
     paging_init();
+
+
 
     return 0;
 }
 
 // main kernel entry point
 void kernel_main(uint32_t magic, uint32_t mb_info_addr) {
-    // call the kernel initialization function
-    if (kernel_init(mb_info_addr) != 0) { // if kernel initialization fails or returns non-zero, print an error message and halt the system
+    if (magic != 0x36d76289) {  // multiboot2 bootloader magic
+        // not loaded by a multiboot2 bootloader
+        return;
+    }
+    if (kernel_init(mb_info_addr) != 0) {
         printf("Kernel initialization failed!\n");
         return;
     }
-
-    // run the shell
     shell_run();
 }

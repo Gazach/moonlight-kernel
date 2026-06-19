@@ -36,6 +36,8 @@ void shell_run(void) {
         else if (strcmp(argv[0], "shell-version") == 0) cmd_shell_version();
         // Moonfetch command to display system information
         else if (strcmp(argv[0], "moonfetch") == 0) cmd_moonfetch();
+        else if (strcmp(argv[0], "uptime") == 0) cmd_uptime();
+        else if (strcmp(argv[0], "sleep") == 0) cmd_sleep(argc, argv);
         else {
             printf("%s: command not found\n", argv[0]);
         }
