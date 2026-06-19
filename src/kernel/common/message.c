@@ -26,11 +26,11 @@ void moonfetch_message()
 
     printf("\n");
     
-    // Set moon to dark grey
-    terminal_setcolor(vga_entry_color(VGA_COLOR_DARK_GREY, VGA_COLOR_BLACK));
-    
     for (int y = -radius_y; y <= radius_y; y++)
     {
+        // Set moon to dark grey at the start of each row
+        terminal_setcolor(vga_entry_color(VGA_COLOR_DARK_GREY, VGA_COLOR_BLACK));
+        
         for (int x = -radius_x; x <= radius_x; x++)
         {
             int dist_sq = x * x + y * y;
@@ -73,15 +73,15 @@ void moonfetch_message()
                 if (used_kb < 1024) {
                 printf("Memory Usage: %u KB used / %u MB total", used_kb, total_mb);
             } else {
-                printf("Memory Usage: %u MB used / %u MB total", used_kb / 1024, total_mb);
+                printf("Memory Usage    : %u MB used / %u MB total", used_kb / 1024, total_mb);
             }
         }
         else if (y == -radius_y + 10){
             uint32_t free_kb = pmm_free_pages() * 4;
             if (free_kb < 1024)
-                printf("Free   : %u KB", free_kb);
+                printf("Free Memory   : %u KB", free_kb);
             else
-                printf("Free   : %u MB", free_kb / 1024);
+                printf("Free Memory   : %u MB", free_kb / 1024);
             terminal_putchar('\n');
         
         // Set color back to dark grey for next moon line
@@ -92,7 +92,7 @@ void moonfetch_message()
     terminal_setcolor(vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK));
     printf("\n");
 }
-
+}
 // show command list
 
 void help_list_message(void) {
