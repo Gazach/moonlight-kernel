@@ -10,7 +10,7 @@
 // Hello message to greet users like neofetch
 
 void print_welcome_message() {
-    printf("Welcome to Moonlight OS! ^^\n");
+    printf("Welcome to Moonlight OS! ^^\ntype ''help'' to find more commands.\n");
 }
 
 void moonfetch_message()
@@ -102,4 +102,8 @@ void help_list_message(void) {
     printf("  echo       print arguments\n");
     printf("  about      show OS info\n");
     printf("  moonfetch  display system information\n");
+    printf("  version    show OS version\n");
+    printf("  shell-version   show shell version\n");
+    printf("  uptime     show system uptime\n");
+    printf("  sleep      sleep for specified milliseconds\n");
 }
