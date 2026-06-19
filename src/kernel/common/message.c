@@ -66,14 +66,23 @@ void moonfetch_message()
             printf("CPU Vendor    : %s", cpu_vendor);
         else if (y == -radius_y + 8)
             printf("CPU Brand     : %s", cpu_brand);
-        else if (y == -radius_y + 9)
-            printf("Memory        : %u MB used / %u MB total",
-            ((pmm_total_pages() - pmm_free_pages()) * 4) / 1024,
-            (pmm_total_pages() * 4) / 1024);
-        else if (y == -radius_y + 10)
-            printf("Free Memory   : %u MB",
-                (pmm_free_pages() * 4) / 1024);
-                terminal_putchar('\n');
+        else if (y == -radius_y + 9){
+            uint32_t used_kb  = pmm_used_pages() * 4;
+            uint32_t total_mb = (pmm_total_pages() * 4) / 1024;
+
+                if (used_kb < 1024) {
+                printf("Memory Usage: %u KB used / %u MB total", used_kb, total_mb);
+            } else {
+                printf("Memory Usage: %u MB used / %u MB total", used_kb / 1024, total_mb);
+            }
+        }
+        else if (y == -radius_y + 10){
+            uint32_t free_kb = pmm_free_pages() * 4;
+            if (free_kb < 1024)
+                printf("Free   : %u KB", free_kb);
+            else
+                printf("Free   : %u MB", free_kb / 1024);
+            terminal_putchar('\n');
         
         // Set color back to dark grey for next moon line
         terminal_setcolor(vga_entry_color(VGA_COLOR_DARK_GREY, VGA_COLOR_BLACK));

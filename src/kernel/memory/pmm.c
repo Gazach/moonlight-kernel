@@ -10,6 +10,7 @@ static uint32_t* bitmap; // Bitmap to track free/used pages
 static uint32_t bitmap_size; // Size of the bitmap in bytes or maximum number of pages
 static uint32_t total_pages; // Total number of pages in the system
 static uint32_t free_pages; // Number of free pages available
+static uint32_t reserved_pages = 0;
 
 // bitmap helper functions
 static inline void set_bit(uint32_t index) {
@@ -150,6 +151,7 @@ void pmm_init(uint32_t mb_info_addr) {
         uint32_t page = addr / PAGE_SIZE;
         if (page < total_pages && !test_bit(page)) {
             set_bit(page);
+            reserved_pages++;
         }
     }
 
@@ -181,6 +183,10 @@ void pmm_free(void* page) {
 
 uint32_t pmm_free_pages(void) {
     return free_pages;
+}
+
+uint32_t pmm_used_pages(void) {
+    return total_pages - free_pages;
 }
 
 uint32_t pmm_total_pages(void) {

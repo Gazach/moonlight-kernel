@@ -13,5 +13,5 @@ void*    pmm_alloc(void);   // allocate one 4KB page
 void     pmm_free(void* page);
 uint32_t pmm_free_pages(void);
 uint32_t pmm_total_pages(void);
-
+uint32_t pmm_used_pages(void);
 #endif // PMM_H
